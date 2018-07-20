@@ -6,7 +6,7 @@ describe Recipe do
   let(:ingredient_list) { [tomatoes_bag, potatoes_bag] }
   subject(:recipe) { described_class.new('soup', 2, ingredient_list) }
 
-  context '#initialize' do
+  context 'initializer and writers' do
     it 'should have not empty string name' do
       expect { recipe.name = '' }.to raise_error(ArgumentError)
       expect { recipe.name = 123 }.to raise_error(ArgumentError)

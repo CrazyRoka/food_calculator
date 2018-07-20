@@ -3,11 +3,12 @@ require 'rspec_config'
 describe MealPlan do
   let(:tomatoes_bag) { create_ingredient_quantity('tomatoes', 50, 250) }
   let(:potatoes_bag) { create_ingredient_quantity('potatoes', 37, 343) }
+  let(:king_potatoes_bag) { create_ingredient_quantity('potatoes', 122, 1500) }
   let(:cucumber_bag) { create_ingredient_quantity('cucumber', 70, 1250) }
   let(:meat_bag) { create_ingredient_quantity('meat', 150, 500) }
 
   let(:soup_recipe) { Recipe.new('soup', 3, [potatoes_bag, tomatoes_bag]) }
-  let(:potatoes_recipe) { Recipe.new('fresh potatoes', 4, [potatoes_bag]) }
+  let(:potatoes_recipe) { Recipe.new('fresh potatoes', 4, [king_potatoes_bag]) }
   let(:salat_recipe) { Recipe.new('salat', 1, [potatoes_bag, tomatoes_bag, cucumber_bag]) }
 
   let(:big_mak) { MealServing.new(8, potatoes_recipe) }
@@ -43,15 +44,24 @@ describe MealPlan do
 
   context '#grouped_ingridient_quantities' do
     it 'should group quantities by ingridients' do
-      groups = course.grouped_ingridient_quantities
+      groups = course.grouped_ingredient_quantities
+      expect(groups.size).to eq(2)
       expect(groups[Ingredient.new('tomatoes', 50)]).to be_within(1e-6).of(1666.66666667)
       expect(groups[Ingredient.new('potatoes', 37)]).to be_within(1e-6).of(2286.66666667)
+
+      groups = festival.grouped_ingredient_quantities
+      expect(groups.size).to eq(4)
+      expect(groups[Ingredient.new('potatoes', 122)]).to be_within(1e-6).of(600000)
+      expect(groups[Ingredient.new('potatoes', 37)]).to be_within(1e-6).of(411600)
+      expect(groups[Ingredient.new('tomatoes', 50)]).to be_within(1e-6).of(300000)
+      expect(groups[Ingredient.new('cucumber', 70)]).to be_within(1e-6).of(1500000)
     end
   end
 
   context '#total_cost' do
     it 'should sum up total cost' do
       expect(course.total_cost).to be_within(1e-6).of(167.94)
+      expect(festival.total_cost).to be_within(1e-6).of(208429.2)
     end
   end
 end

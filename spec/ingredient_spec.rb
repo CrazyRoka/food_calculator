@@ -3,7 +3,7 @@ require 'rspec_config'
 describe Ingredient do
   subject(:tomatoes) { described_class.new('tomatoes', 35) }
 
-  describe '#initialize' do
+  context 'initializer and writers' do
     it 'should have non negative cost' do
       expect { described_class.new('tomatoes', 0.1) }.not_to raise_error
       expect { described_class.new('tomatoes', 0) }.not_to raise_error
@@ -32,7 +32,7 @@ describe Ingredient do
     end
   end
 
-  describe '#==' do
+  context '#==' do
     it 'should be equal' do
       ingredient = described_class.new('tomatoes', 35)
       expect(ingredient).to eq(tomatoes)

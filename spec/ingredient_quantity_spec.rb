@@ -6,7 +6,7 @@ describe IngredientQuantity do
   subject(:tomatoes_bag) { described_class.new(tomatoes, 250) }
   subject(:potatoes_bag) { described_class.new(potatoes, 473) }
 
-  context '#initialize' do
+  context 'initializer and writers' do
     it 'should work with positive quantity' do
       expect { described_class.new(tomatoes, 123) }.not_to raise_error
       expect { tomatoes_bag.quantity = 60 }.not_to raise_error

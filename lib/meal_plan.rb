@@ -9,7 +9,7 @@ class MealPlan
     self.meal_servings = meal_servings
   end
 
-  def grouped_ingridient_quantities
+  def grouped_ingredient_quantities
     group = Hash.new(0)
     meal_servings.each do |meal_serving|
       meal_serving.total_ingredient_quantities.each do |ingredient_quantity|

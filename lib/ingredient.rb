@@ -19,12 +19,12 @@ class Ingredient
   end
 
   def name=(name)
-    ArgumentChecker.check(name, "name", type: String, not_empty: true)
+    ArgumentChecker.check(name, 'name', type: String, not_empty: true)
     @name = name
   end
 
   def cost=(cost)
-    ArgumentChecker.check(cost, "cost", type: Numeric, non_negative: true)
+    ArgumentChecker.check(cost, 'cost', type: Numeric, non_negative: true)
     @cost = cost
   end
 end

@@ -7,7 +7,7 @@ describe MealServing do
   let(:recipe) { Recipe.new('soup', 2, ingredient_list) }
   subject(:serving) { described_class.new(4, recipe) }
 
-  context '#initialize' do
+  context 'writers' do
     it 'should have positive "times"' do
       expect { serving.times = 5 }.not_to raise_error
       expect { serving.times = 0.1 }.not_to raise_error
