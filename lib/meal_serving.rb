@@ -7,7 +7,7 @@ class MealServing
     self.times, self.recipe = times, recipe
   end
 
-  def total_ingridient_quantities
+  def total_ingredient_quantities
     recipe.ingredient_quantities_per_servings(times)
   end
 

@@ -1,9 +1,9 @@
 require 'rspec_config'
 
 describe Recipe do
-  let(:tomatoe_bag) { create_ingredient_quantity('tomatoe', 50, 250) }
-  let(:potatoe_bag) { create_ingredient_quantity('potatoe', 37, 343) }
-  let(:ingredient_list) { [tomatoe_bag, potatoe_bag] }
+  let(:tomatoes_bag) { create_ingredient_quantity('tomatoes', 50, 250) }
+  let(:potatoes_bag) { create_ingredient_quantity('potatoes', 37, 343) }
+  let(:ingredient_list) { [tomatoes_bag, potatoes_bag] }
   subject(:recipe) { described_class.new('soup', 2, ingredient_list) }
 
   context '#initialize' do
@@ -28,8 +28,8 @@ describe Recipe do
       expect { recipe.ingredient_quantities = [] }.to raise_error(ArgumentError)
       expect { recipe.ingredient_quantities = [1] }.to raise_error(ArgumentError)
       expect { recipe.ingredient_quantities = nil }.to raise_error(ArgumentError)
-      expect { recipe.ingredient_quantities = [tomatoe_bag] }.not_to raise_error
-      expect { recipe.ingredient_quantities = [potatoe_bag] }.not_to raise_error
+      expect { recipe.ingredient_quantities = [tomatoes_bag] }.not_to raise_error
+      expect { recipe.ingredient_quantities = [potatoes_bag] }.not_to raise_error
     end
   end
 

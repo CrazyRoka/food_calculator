@@ -1,9 +1,9 @@
 require 'rspec_config'
 
 describe MealServing do
-  let(:tomatoe_bag) { create_ingredient_quantity('tomatoe', 50, 250) }
-  let(:potatoe_bag) { create_ingredient_quantity('potatoe', 37, 343) }
-  let(:ingredient_list) { [tomatoe_bag, potatoe_bag] }
+  let(:tomatoes_bag) { create_ingredient_quantity('tomatoes', 50, 250) }
+  let(:potatoes_bag) { create_ingredient_quantity('potatoes', 37, 343) }
+  let(:ingredient_list) { [tomatoes_bag, potatoes_bag] }
   let(:recipe) { Recipe.new('soup', 2, ingredient_list) }
   subject(:serving) { described_class.new(4, recipe) }
 
@@ -24,7 +24,7 @@ describe MealServing do
 
   context '#total_ingridient_quantities' do
     it 'should return ingredient_quantities' do
-      list = serving.total_ingridient_quantities
+      list = serving.total_ingredient_quantities
       expect(list[0].quantity).to eq(500)
       expect(list[1].quantity).to eq(686)
     end

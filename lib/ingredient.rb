@@ -12,6 +12,12 @@ class Ingredient
     other.is_a?(Ingredient) && other.name == name && other.cost == cost
   end
 
+  alias eql? ==
+
+  def hash
+    name.hash ^ cost.hash
+  end
+
   def name=(name)
     ArgumentChecker.check(name, "name", type: String, not_empty: true)
     @name = name

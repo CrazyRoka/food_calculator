@@ -1,4 +1,4 @@
-require 'meal_serving'
+require 'meal_plan'
 
 module Helpers
   def create_ingredient_quantity(name, cost, quantity)
