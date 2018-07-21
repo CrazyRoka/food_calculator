@@ -1,6 +1,6 @@
 require 'meal_plan'
 require 'helpers'
 
-RSpec.configure do |c|
-  c.include Helpers
+RSpec.configure do |config|
+  config.include Helpers
 end

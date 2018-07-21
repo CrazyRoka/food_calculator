@@ -1,67 +1,58 @@
 require 'rspec_config'
 
 describe MealPlan do
-  let(:tomatoes_bag) { create_ingredient_quantity('tomatoes', 50, 250) }
-  let(:potatoes_bag) { create_ingredient_quantity('potatoes', 37, 343) }
-  let(:king_potatoes_bag) { create_ingredient_quantity('potatoes', 122, 1500) }
-  let(:cucumber_bag) { create_ingredient_quantity('cucumber', 70, 1250) }
-  let(:meat_bag) { create_ingredient_quantity('meat', 150, 500) }
+  let(:big_mak) { MealServing.new(8, fresh_potato(servings: 4)) }
+  let(:salad_mak) { MealServing.new(6, salad(servings: 1)) }
+  let(:soup_mak) { MealServing.new(2, soup(servings: 2)) }
 
-  let(:soup_recipe) { Recipe.new('soup', 3, [potatoes_bag, tomatoes_bag]) }
-  let(:potatoes_recipe) { Recipe.new('fresh potatoes', 4, [king_potatoes_bag]) }
-  let(:salat_recipe) { Recipe.new('salat', 1, [potatoes_bag, tomatoes_bag, cucumber_bag]) }
-
-  let(:big_mak) { MealServing.new(8, potatoes_recipe) }
-  let(:salat_mak) { MealServing.new(6, salat_recipe) }
-  let(:soup_mak) { MealServing.new(2, soup_recipe) }
-
-  subject(:festival) { described_class.new('Festival plan', 200, [big_mak, salat_mak]) }
+  subject(:festival) { described_class.new('Festival plan', 200, [big_mak, salad_mak]) }
   subject(:course) { described_class.new('course', 10, [soup_mak]) }
 
   context 'writers' do
     it 'should have positive integer number of individuals' do
-      expect { course.individuals_count = 5 }.not_to raise_error
       expect { course.individuals_count = 1 }.not_to raise_error
       expect { course.individuals_count = 1.1 }.to raise_error(ArgumentError)
       expect { course.individuals_count = -5 }.to raise_error(ArgumentError)
     end
 
     it 'should have not empty string name' do
-      expect { course.name = 'Roka' }.not_to raise_error
       expect { course.name = 'Test' }.not_to raise_error
       expect { course.name = '' }.to raise_error(ArgumentError)
-      expect { course.name = 5 }.to raise_error(ArgumentError)
     end
 
     it 'should have non empty array of meal servings' do
-      expect { course.meal_servings = [big_mak] }.not_to raise_error
-      expect { course.meal_servings = [salat_mak, big_mak, soup_mak, big_mak] }.not_to raise_error
-      expect { course.meal_servings = [salat_mak] }.not_to raise_error
-      expect { course.meal_servings = [1, 2, 3] }.to raise_error(ArgumentError)
-      expect { course.meal_servings = [nil, 't'] }.to raise_error(ArgumentError)
+      expect { course.meal_servings = [salad_mak] }.not_to raise_error
+      expect { course.meal_servings = [] }.to raise_error(ArgumentError)
     end
   end
 
-  context '#grouped_ingridient_quantities' do
-    it 'should group quantities by ingridients' do
+  describe '#grouped_ingridient_quantities' do
+    let(:potatoes_bag) { bag_of(potato(cost: 100), quantity: 5000) }
+    let(:tomatoes_bag) { bag_of(tomato(cost: 50), quantity: 2500) }
+    let(:cucumber_bag) { bag_of(cucumber(cost: 25), quantity: 6000 * 200) }
+    let(:fresh_potatoes_bag) { bag_of(potato(cost: 200), quantity: 3000 * 200) }
+    it 'should group quantities by ingredients' do
       groups = course.grouped_ingredient_quantities
       expect(groups.size).to eq(2)
-      expect(groups[Ingredient.new('tomatoes', 50)]).to be_within(1e-6).of(1666.66666667)
-      expect(groups[Ingredient.new('potatoes', 37)]).to be_within(1e-6).of(2286.66666667)
+      expect(groups.include?(tomatoes_bag)).to be_truthy
+      expect(groups.include?(potatoes_bag)).to be_truthy
+
+      potatoes_bag.quantity = 3000 * 200
+      tomatoes_bag.quantity = 1500 * 200
 
       groups = festival.grouped_ingredient_quantities
       expect(groups.size).to eq(4)
-      expect(groups[Ingredient.new('potatoes', 122)]).to be_within(1e-6).of(600000)
-      expect(groups[Ingredient.new('potatoes', 37)]).to be_within(1e-6).of(411600)
-      expect(groups[Ingredient.new('tomatoes', 50)]).to be_within(1e-6).of(300000)
-      expect(groups[Ingredient.new('cucumber', 70)]).to be_within(1e-6).of(1500000)
+      expect(groups.include?(cucumber_bag)).to be_truthy
+      expect(groups.include?(fresh_potatoes_bag)).to be_truthy
+      expect(groups.include?(tomatoes_bag)).to be_truthy
+      expect(groups.include?(potatoes_bag)).to be_truthy
     end
   end
 
-  context '#total_cost' do
+  describe '#total_cost' do
     it 'should sum up total cost' do
-      expect(course.total_cost).to be_within(1e-6).of(167.94)
-      expect(festival.total_cost).to be_within(1e-6).of(208429.2)
+      expect(course.total_cost).to be_within(0.001).of(625)
+      expect(festival.total_cost).to be_within(0.001).of(225000)
     end
   end
 end

@@ -17,7 +17,7 @@ class MealPlan
         group[ingredient] += ingredient_quantity.quantity * individuals_count
       end
     end
-    group
+    group.map { |key, value| IngredientQuantity.new(key, value) }
   end
 
   def total_cost

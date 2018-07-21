@@ -21,6 +21,12 @@ class IngredientQuantity
     IngredientQuantity.new(ingredient, quantity * multiplier)
   end
 
+  alias eql? ==
+
+  def ==(other)
+    other.is_a?(IngredientQuantity) && other.ingredient == ingredient && other.quantity == quantity
+  end
+
   def total_cost
     quantity * ingredient.cost * COST_PER_GRAM
   end
